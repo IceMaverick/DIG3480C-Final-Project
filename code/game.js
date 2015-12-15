@@ -239,7 +239,8 @@ Level.prototype.obstacleAt = function(pos, size) {
   // Bottom bound
   var yEnd = Math.ceil(pos.y + size.y);
 
-  // Consider the sides and top and bottom of the level as walls
+  // Consider the sides of the level as walls
+  //The bottom is considered lava so "falling out" restarts the level.
   if (xStart < 0 || xEnd > this.width || yStart < 0)
     return "wall";
   if (yEnd > this.height)
@@ -352,6 +353,7 @@ Player.prototype.moveX = function(step, level, keys) {
 
 var gravity = 90;
 var jumpSpeed = 25;
+var tracker = true;
 
 Player.prototype.moveY = function(step, level, keys) {
   // Accelerate player downward (always)
@@ -361,14 +363,23 @@ Player.prototype.moveY = function(step, level, keys) {
   var obstacle = level.obstacleAt(newPos, this.size);
   // The floor is also an obstacle -- only allow players to 
   // jump if they are touching some obstacle.
+  //Tried to implement a double jump. Absolutely failed, however, Wit can now stick to walls
+  //As well as ceilings by holding the jump button while pressed against them. Makes a good mechanic.
   if (obstacle) {
     level.playerTouched(obstacle);
-    if (keys.up && this.speed.y > 0)
+	if (keys.up && tracker != false) {
       this.speed.y = -jumpSpeed;
-    else
+	  tracker = false;
+	}
+    else {
       this.speed.y = 0;
+	}
   } else {
     this.pos = newPos;
+	if (keys.up && tracker != false) {
+      this.speed.y = -jumpSpeed;
+	  tracker = false;
+	}
   }
 };
 
@@ -410,6 +421,7 @@ Level.prototype.playerTouched = function(type, actor) {
 		sndfx.play();	
   } else if (type == "victory") {
 	this.finishDelay = 8;
+	this.status = "won";
 	var sndfx = document.getElementById('sndfx');
 		sndfx.src = "sound/game-beat.mp3";
 		sndfx.play();
@@ -427,8 +439,8 @@ Level.prototype.playerTouched = function(type, actor) {
     if (!this.actors.some(function(actor) {
            return actor.type == "coin";
          })) {
-      this.status = "won";
       this.finishDelay = 4;
+	  this.status = "won";
 	  //pauses music, plays victory jingle.
 	  var snd = document.getElementById('snd');
 		snd.pause();
@@ -436,6 +448,8 @@ Level.prototype.playerTouched = function(type, actor) {
 		sndfx.src = "sound/level-win.mp3";
 		sndfx.play();
     }
+  } else if (type == "wall") {
+	  tracker = true;
   }
 };
 
@@ -589,8 +603,9 @@ function runGame(plans, Display) {
         startLevel(n + 1);
 		playMusic (n + 1);
 	  }
-      else
-        console.log("You win!");
+      else {
+        console.log("A Winrar is You!");
+	  }
     });
   }
   //controls initial game start point. Great for debugging.

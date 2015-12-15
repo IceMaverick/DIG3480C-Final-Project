@@ -4,7 +4,8 @@ var actorChars = {
   "o": Coin, // A coin will wobble up and down
   "=": Lava, "|": Lava, "v": Lava,
   "f": Fireball,
-  "q": Victory  
+  "q": Victory,  
+  "t": Tut
 };
 
 function Level(plan) {
@@ -127,6 +128,12 @@ function Lava(pos, ch) {
   }
 }
 Lava.prototype.type = "lava";
+
+function Tut(pos, ch) {
+  this.pos = pos;
+  this.size = new Vector(1, 1);
+}
+Tut.prototype.type = "tut";
 
 // Helper function to easily create an element of a type provided 
 function elt(name, className) {
@@ -304,6 +311,10 @@ Lava.prototype.act = function(step, level) {
     this.speed = this.speed.times(-1);
 };
 
+Tut.prototype.act = function(step, level) {
+  var newPos = this.pos;
+
+};
 
 var maxStep = 0.05;
 
@@ -588,6 +599,8 @@ function playMusic(level) {
 				break;
 		}
 }
+
+
 
 function runGame(plans, Display) {
   function startLevel(n) {

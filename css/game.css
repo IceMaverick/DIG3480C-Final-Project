@@ -40,7 +40,7 @@ body {
     background: url(../images/background2.png);
 	background-size: 100%;
 }
-
+@media only screen and (min-width: 1350px) and (min-height: 925px) {
 h1 {
     text-align: center;
 	font-family: "Impact", Charcoal, sans-serif;
@@ -73,4 +73,34 @@ h4 {
     right: 0;
 }
 
+h5 {
+    text-align: center;
+	font-family: "Impact", Charcoal, sans-serif;
+	font-size: 28px;
+	text-shadow: #000 2px 2px 1px, #000 -2px -2px 1px, #000 2px -2px 1px, #000 -2px 2px 1px;
+	color: #aaaaaa;
+	padding: 0;
+    margin: auto;
+    display: block;
+    position: absolute;
+    top: 1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+}
+
+@media only screen and (max-width: 1150px){
+h1 {
+    visibility: hidden;
+}
+
+h4 {
+    visibility: hidden;
+}
+
+h5 {
+    visibility: hidden;
+}
+}
 

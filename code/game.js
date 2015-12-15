@@ -313,7 +313,6 @@ Lava.prototype.act = function(step, level) {
 
 Tut.prototype.act = function(step, level) {
   var newPos = this.pos;
-
 };
 
 var maxStep = 0.05;
@@ -409,18 +408,20 @@ Player.prototype.act = function(step, level, keys) {
   }
 };
 
+var tutSteps = 0;
+
 Level.prototype.playerTouched = function(type, actor) {
 
   // if the player touches lava and the player hasn't won
   // Player loses
   if (type == "lava" && this.status == null) {
     this.status = "lost";
-    this.finishDelay = 4;
+    this.finishDelay = 3;
 	//Pauses music and plays Game Over sound. Extended death delay to allow SFX to play.
 	var snd = document.getElementById('snd');
 		snd.pause();
 	var sndfx = document.getElementById('sndfx');
-		sndfx.src = "sound/player-died.mp3";
+		sndfx.src = "sound/Collapse2.ogg";
 		sndfx.play();
   } else if (type == "fireball") {
 	this.status = "lost";
@@ -428,20 +429,20 @@ Level.prototype.playerTouched = function(type, actor) {
 	var snd = document.getElementById('snd');
 		snd.pause();
 	var sndfx = document.getElementById('sndfx');
-		sndfx.src = "sound/player-died.mp3";
+		sndfx.src = "sound/Collapse2.ogg";
 		sndfx.play();	
   } else if (type == "victory") {
-	this.finishDelay = 8;
+	this.finishDelay = 11;
 	this.status = "won";
 	var sndfx = document.getElementById('sndfx');
-		sndfx.src = "sound/game-beat.mp3";
+		sndfx.src = "sound/Fanfare2.ogg";
 		sndfx.play();
 	this.actors = this.actors.filter(function(other) {
       return other != actor;
 	});	
   } else if (type == "coin") {
 	var coinfx = document.getElementById('coinfx');
-		coinfx.src = "sound/coin.mp3";
+		coinfx.src = "sound/Coin.ogg";
 		coinfx.play();
     this.actors = this.actors.filter(function(other) {
       return other != actor;
@@ -450,18 +451,25 @@ Level.prototype.playerTouched = function(type, actor) {
     if (!this.actors.some(function(actor) {
            return actor.type == "coin";
          })) {
-      this.finishDelay = 4;
+      this.finishDelay = 6;
 	  this.status = "won";
 	  //pauses music, plays victory jingle.
 	  var snd = document.getElementById('snd');
 		snd.pause();
 	  var sndfx = document.getElementById('sndfx');
-		sndfx.src = "sound/level-win.mp3";
+		sndfx.src = "sound/Fanfare1.ogg";
 		sndfx.play();
     }
   } else if (type == "wall") {
 	  tracker = true;
-  }
+  } //else if (type == "tut") {
+	//var tutorial = ["This is a tutorial box! Press the Up Arrow to jump over this ledge!",
+	//				"Wit can surge up walls by holding the jump button while running at them!",
+	//				"Wit can also cling to ceilings by holding the jump button!",
+	//				"Oh! Coins! Just what Wit is searching for! Walk over them to collect them!",
+	//				"Collect all of the coins in the area to progress to the next one!"];
+	
+	//}
 };
 
 // Arrow key codes for readibility
@@ -536,7 +544,7 @@ function playMusic(level) {
 		switch (level) {
 			case 0:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smb3-hammer.mp3";
+				snd.src = "sound/Field2.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -545,7 +553,7 @@ function playMusic(level) {
 				break;
 			case 1:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smw-castle.mp3";
+				snd.src = "sound/Town3.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -554,7 +562,7 @@ function playMusic(level) {
 				break;
 			case 2:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smb3-castle.mp3";
+				snd.src = "sound/Battle5.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -563,7 +571,7 @@ function playMusic(level) {
 				break;
 			case 3:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smw-boss.mp3";
+				snd.src = "sound/Battle1.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -572,7 +580,7 @@ function playMusic(level) {
 				break;
 			case 4:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smg-star-reactor.mp3";
+				snd.src = "sound/Battle6.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -581,7 +589,7 @@ function playMusic(level) {
 				break;
 			case 5:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/mariorpg-bowser.mp3";
+				snd.src = "sound/Battle2.ogg";
 				snd.addEventListener('ended', function() {
 				this.currentTime = 0;
 				this.play();
@@ -594,7 +602,7 @@ function playMusic(level) {
 				break;
 			default:
 				var snd = document.getElementById('snd');
-				snd.src = "sound/smw-castle.mp3";
+				snd.src = "sound/Battle1.ogg";
 				snd.play();
 				break;
 		}

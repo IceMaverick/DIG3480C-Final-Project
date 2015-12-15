@@ -100,8 +100,8 @@ var playerSprites = document.createElement("img");
 playerSprites.src = "images/player.png";
 var playerXOverlap = 4;
 
-var tutSprite = document.createElement("img");
-tutSprite.src = "images/tut.png";
+//var tutSprite = document.createElement("img");
+//tutSprite.src = "images/tut.png";
 
 CanvasDisplay.prototype.drawPlayer = function(x, y, width,
                                               height) {
@@ -135,14 +135,14 @@ CanvasDisplay.prototype.drawActors = function() {
     var y = (actor.pos.y - this.viewport.top) * scale;
     if (actor.type == "player") {
       this.drawPlayer(x, y, width, height);
-    } else if (actor.type == "coin") {
+    } else {
       var tileX = (actor.type == "coin" ? 2 : 1) * scale;
       this.cx.drawImage(otherSprites,
                         tileX, 0, width, height,
                         x,     y, width, height);
-    } else if (actor.type == "tut") {
-	  var tileX = (actor.type == "tut" ? 2 : 1) * scale;
-	  this.cx.drawImage(tutSprite, x, y);
-	}
+    } //else if (actor.type == "tut") {
+	  //var tileX = (actor.type == "tut" ? 2 : 1) * scale;
+	  //this.cx.drawImage(tutSprite, x, y);
+	//}
   }, this);
 };
